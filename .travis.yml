@@ -21,4 +21,4 @@ matrix:
     os: osx
 addons:
   code_climate:
-    repo_token: dbbc732a1a68e8d47a792955b21b0a0018854a658239511a561dff1e0c7a127f!
+    repo_token: dbbc732a1a68e8d47a792955b21b0a0018854a658239511a561dff1e0c7a127f
