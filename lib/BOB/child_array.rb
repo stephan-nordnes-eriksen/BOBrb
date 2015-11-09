@@ -27,7 +27,7 @@ module BOB
 			end
 			return self
 		end
-		def class (object_class)
+		def classs (object_class)
 			self.cl(object_class)
 		end
 		def cl (object_class)
