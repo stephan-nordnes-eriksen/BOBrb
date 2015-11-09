@@ -4,6 +4,8 @@ BOB is a simple and powerfull ruby pipe system for building complex XML and HTML
 ![BOB](/BOB.png?raw=true)
 
 [![Build Status](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb.svg)](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb)
+[![Code Climate](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/badges/gpa.svg)](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb)
+[![Test Coverage](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/badges/coverage.svg)](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/coverage)
 
 ##Install:
 ```ruby
