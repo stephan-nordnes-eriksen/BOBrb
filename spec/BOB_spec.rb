@@ -39,7 +39,7 @@ describe BOB do
 		expect(BOB.new("h1").content("BOB is awesome! <3").s() ).to eq("<h1>BOB is awesome! <3</h1>")
 	end
 	it "div properties" do
-		expect(BOB.new("div", {"data-BOB-is-cool" => "Yes it is", "data-very-cool"=> "indeed"}).s() ).to eq("<div data-BOB-is-cool=\"Yes it is\" data-very-cool=\"indeed\"></div>")
+		expect(BOB.new("div", {"data-BOB-is-cool" => "Yes it is", "data-very-cool"=> "indeed"}).s() ).to eq("<div data-BOB-is-cool=\"Yes it is\" data-very-cool=\"indeed\"></div>").or eq("<div data-very-cool=\"indeed\" data-BOB-is-cool=\"Yes it is\" ></div>")
 	end
 	it "div append" do
 		expect(BOB.new("div").append("span").s() ).to eq("<div></div><span></span>")
