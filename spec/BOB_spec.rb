@@ -92,4 +92,19 @@ describe BOB do
 </lol>})
 	end
 
+	it 'tests style on child_element' do
+		expect(BOB.new("div").append("span").style("test").s() ).to eq("<div></div><span style=\"test\"></span>")
+	end
+	it 'tests style on child_element' do
+		expect(BOB.new("div").append("span").classs("test").s() ).to eq("<div></div><span class=\"test\"></span>")
+	end
+	it 'tests append on child_element' do
+		expect(BOB.new("div").append("span").append("test").s() ).to eq("<div></div><span></span><test></test>")
+	end
+	it 'tests prepend on child_element' do
+		expect(BOB.new("div").append("span").prepend("test").s() ).to eq("<div></div><test></test><span></span>")
+	end
+	it 'tests pretty Print on child_element' do
+		expect(BOB.new("div").append("span").prettyPrint() ).to eq("<div>\n</div>\n<span>\n</span>")
+	end
 end
