@@ -2,7 +2,8 @@
 
 # build or bail
 module BOB
-	class BOB
+	class Element
+		attr_accessor :object_content, :parent
 		@@data = nil
 		
 		def self.find(selector)
@@ -11,40 +12,43 @@ module BOB
 		def self.data
 			return @@data
 		end
+		def self.data=(data)
+			@@data = data
+		end
 		def self.d
 			return @@data
 		end
 		def self.get_or_create_bob(data, options, parent)
-			child_bob = null
-			if data instanceof BOB
+			child_bob = nil
+			if data.is_a?(Element)
 				child_bob = data
 			else
-				child_bob = BOB.new(data, options, parent)
+				child_bob = Element.new(data, options, parent)
 			end
 			return child_bob
 		end
 
 		def self.toVariable(data)
-			if typeof data is 'function'
-				return data()
+			if data.respond_to?(:call)
+				return data.call
 			else
 				return data
 			end
 		end
 
-		def intitialize (selector, options, parent=null, preBob=null, contentBob=null, postBob=null)
-			if selector.indexOf(" ") > -1
-				console.error("Invalid BOB selector. \"" + selector + "\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\".")
+		def initialize (selector, options=nil, parent=nil, preBob=nil, contentBob=nil, postBob=nil)
+			if selector.include?(" ")
+				console.error("Invalid Element selector. \"" + selector + "\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\".")
 				return "Invalid selector. See console log for more details."
 			end
 
 			@parent = parent
 
-			#Flatting so BOB.data gets parsed out to the correct thing.
+			#Flatting so Element.data gets parsed out to the correct thing.
 			@options = {}
 			if options
 				options.each do |key, value|
-					@options[key] = BOB.toVariable(value)
+					@options[key] = Element.toVariable(value)
 				end
 			end
 
@@ -53,14 +57,14 @@ module BOB
 			@postBob = postBob
 
 			@type = selector
-			@object_class = null
-			@object_id = null
+			@object_class = nil
+			@object_id = nil
 			@object_content = ""
-			@object_style = null
+			@object_style = nil
 
-			if selector.indexOf(".") > -1
+			if selector.include?(".")
 				@type, @object_class = selector.split(".")
-			elsif selector.indexOf("#") > -1
+			elsif selector.include?("#")
 				@type, @object_id = selector.split("#")
 			end
 		end
@@ -70,32 +74,32 @@ module BOB
 		end
 		def co (content)
 			child = self.i("")
-			child.object_content = BOB.toVariable(content)
+			child.object_content = Element.toVariable(content)
 			return self
 		end
 		def style (style)
 			self.st(style)
 		end
 		def st (style)
-			@object_style = BOB.toVariable(style)
+			@object_style = Element.toVariable(style)
 			return self
 		end
-		def class (object_class)
+		def classs (object_class)
 			self.cl(object_class)
 		end
 		def cl (object_class)
-			@object_class = BOB.toVariable(object_class)
+			@object_class = Element.toVariable(object_class)
 			return self
 		end
 		def id (object_id)
-			@object_id = BOB.toVariable(object_id)
+			@object_id = Element.toVariable(object_id)
 			return self
 		end
-		def insert (data, options)
+		def insert (data, options=nil)
 			self.i(data,options)
 		end
-		def i (data, options)
-			child_bob = BOB.get_or_create_bob(data, options, self)
+		def i (data, options=nil)
+			child_bob = Element.get_or_create_bob(data, options, self)
 			if @innerBob
 				@innerBob.a(child_bob)
 			else
@@ -103,26 +107,26 @@ module BOB
 			end
 			return child_bob
 		end
-		def append (data, options)
+		def append (data, options=nil)
 			self.a(data, options)
 		end
-		def a (data, options)
+		def a (data, options=nil)
 			par = self
 			par = @parent if @parent
-			new_bob = BOB.get_or_create_bob(data, options, par)
+			new_bob = Element.get_or_create_bob(data, options, par)
 			if @postBob
 				@postBob.a(new_bob)
 			else
 				@postBob = new_bob
 			end
 		end
-		def prepend (data, options)
+		def prepend (data, options=nil)
 			self.p(data, options)
 		end
-		def p (data, options)
+		def p (data, options=nil)
 			par = self
 			par = @parent if @parent
-			new_bob = BOB.get_or_create_bob(data, options, par)
+			new_bob = Element.get_or_create_bob(data, options, par)
 			if @preBob
 				@preBob.p(new_bob)
 			else
@@ -160,9 +164,9 @@ module BOB
 			end
 			
 			#kill parents so they will print out.
-			@innerBob.parent = null if @innerBob
-			@preBob.parent     = null if @preBob
-			@postBob.parent    = null if @postBob
+			@innerBob.parent = nil if @innerBob
+			@preBob.parent     = nil if @preBob
+			@postBob.parent    = nil if @postBob
 
 			prepend = ''
 			append = ''
@@ -178,15 +182,15 @@ module BOB
 				printself += '<' + @type + ' '
 				@options.each do |key, value|
 					unless key == 'style' && @object_style || key == 'id' && @object_id || key == 'class' && @object_class
-						printself += key + '="' + value + '" '
+						printself << key.to_s() + '="' + value.to_s() + '" '
 					end
 				end
 				
-				printself += 'class="' + @object_class + '" ' if @object_class
-				printself += 'id="'    + @object_id    + '" ' if @object_id
-				printself += 'style="' + @object_style + '" ' if @object_style
+				printself << 'class="' + @object_class.to_s() + '" ' if @object_class
+				printself << 'id="'    + @object_id.to_s()    + '" ' if @object_id
+				printself << 'style="' + @object_style.to_s() + '" ' if @object_style
 
-				printself = printself.slice(0, -1)
+				printself = printself[0..-2]
 				closable = (["area",
 							"base",
 							"br",
@@ -206,19 +210,19 @@ module BOB
 							"basefont",
 							"bgsound",
 							"frame",
-							"isindex"].indexOf(@type) != -1)
+							"isindex"].include?(@type))
 
 				if closable && content_b == ''
-					printself += ' />'
+					printself << ' />'
 				else	
 					if pretty
 						if content_b
-							content_b = "\n\t" +  content_b.split("\n").join("\n\t") + "\n"	
+							content_b = "\n\t" +  content_b.split("\n").join("\n\t").to_s() + "\n"	
 						else
 							content_b = "\n"
 						end
 					end
-					printself += '>' + content_b + '</' + @type + '>'
+					printself.to_s() << '>' + content_b.to_s() + '</' + @type.to_s() + '>'
 				end
 			else
 				#pure text element (no type)
@@ -231,15 +235,15 @@ module BOB
 			end
 					
 			
-			return prepend + printself + append
+			return prepend.to_s() + printself.to_s() + append.to_s()
 		end
 
-		# BOB.new("div",{test: "lol"}).do(["data"]).add("p",funtion(d){self.insert("div",{a: d.height})})
+		# Element.new("div",{test: "lol"}).do(["data"]).add("p",funtion(d){self.insert("div",{a: d.height})})
 
-		# BOB.new("ul",{class: "lol"})
+		# Element.new("ul",{class: "lol"})
 		# 	.do(dataset)
-		# 	.insert("li", {dataProp: BOB.data}) #?
-		# 		.content(BOB.data)              #?
+		# 	.insert("li", {dataProp: Element.data}) #?
+		# 		.content(Element.data)              #?
 		# 	.insert("p")
 		# 		.content("lol")
 		# 	.up()

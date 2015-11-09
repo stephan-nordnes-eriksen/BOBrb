@@ -6,50 +6,50 @@ module BOB
 			@bobs = []
 		end
 
-		#No point in doing this on parent. Does not make sense to do ".do(data).id(BOB.data)"
+		#No point in doing this on parent. Does not make sense to do ".do(data).id(BOB::Element.data)"
 		def content (content)
 			self.co(content)
 		end
 		def co (content)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				@bobs[i].co(content) if @bobs[i]
 			end
-			return this
+			return self
 		end
 		def style (style)
 			self.st(style)
 		end
 		def st (style)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				@bobs[i].st(style) if @bobs[i]
 			end
-			return this
+			return self
 		end
 		def class (object_class)
 			self.cl(object_class)
 		end
 		def cl (object_class)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				@bobs[i].cl(object_class) if @bobs[i]
 			end
-			return this
+			return self
 		end
 		def id (object_id)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				@bobs[i].id(object_id) if @bobs[i]
 			end
-			return this
+			return self
 		end
-		def insert (data, options)
+		def insert (data, options=nil)
 			self.i(data, options)
 		end
-		def i (data, options)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+		def i (data, options=nil)
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].insert(data, options)
 				else
@@ -57,29 +57,29 @@ module BOB
 				end
 			end
 					
-			return this
+			return self
 		end
-		def append (data, options)
+		def append (data, options=nil)
 			self.a(data, options)
 		end
-		def a (data, options)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+		def a (data, options=nil)
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].a(data, options)
 				else
 					@bobs.push(@parent.a(data, options))
 				end
 			end
-			return this
+			return self
 		end
 
-		def prepend (data, options)
+		def prepend (data, options=nil)
 			self.p(data, options)
 		end
-		def p (data, options)
-			for i in [0...@dataset.length]
-				BOB._data = @dataset[i]
+		def p (data, options=nil)
+			@dataset.each_with_index do |item, i|
+				BOB::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].p(data, options)
 				else
@@ -87,7 +87,7 @@ module BOB
 				end
 			end
 
-			return this
+			return self
 		end
 		def prettyPrint
 			self.pp()
@@ -117,7 +117,7 @@ module BOB
 		end
 		def d (data)
 			for bob in @bobs
-				BOB._data = @dataset[i]
+				BOB::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].d(data)
 				else
@@ -125,24 +125,24 @@ module BOB
 				end
 			end
 				
-			return this
+			return self
 		end
 		def up
 			self.u()
 		end
 		def u
 			unless @bobs[0]
-				BOB._data = null
+				BOB::Element.data = nil
 				return @parent
 			end
-			for i in [0...@bobs.length]
+			[0...@bobs.length].each do |i|
 				@bobs[i] = @bobs[i].u()
 			end
 			if @bobs[0] == @parent
-				BOB._data = null
+				BOB::Element.data = nil
 				return @parent
 			else
-				return this
+				return self
 			end
 		end
 	end
