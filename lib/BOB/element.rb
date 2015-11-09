@@ -216,8 +216,8 @@ module BOB
 					printself << ' />'
 				else	
 					if pretty
-						if content_b
-							content_b = "\n\t" +  content_b.split("\n").join("\n\t").to_s() + "\n"	
+						if content_b && content_b != ""
+							content_b = "\n\t" +  content_b.gsub("\n", "\n\t").to_s() + "\n"
 						else
 							content_b = "\n"
 						end
@@ -229,9 +229,9 @@ module BOB
 				printself = @object_content #it should not have any innerBob as it is never exposed when we are setting object_content
 			end
 			if pretty
-				prepend =  prepend + "\n\t" if prepend
-				printself = printself.split("\n").join("\n\t") if prepend
-				append = "\n" + append if append
+				prepend =  prepend + "\n\t" if prepend && prepend != ""
+				printself = printself.gsub("\n", "\n\t") if prepend && prepend != ""
+				append = "\n" + append if append && append != ""
 			end
 					
 			

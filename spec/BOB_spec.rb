@@ -77,4 +77,19 @@ describe BOB do
 		expect(BOB.new("div").i("img", {"src" => "some.png"}).u().d([1,2,3]).i("p.number").co(BOB.d).s()).to eq("<div><img src=\"some.png\" /><p class=\"number\">1</p><p class=\"number\">2</p><p class=\"number\">3</p></div>")
 	end
 
+	it 'pretty print' do
+		expect(BOB.new("article").a("lol").i("photo").co("test").a("test2").i("price").co("200euro").pp()).to eq(%{<article>
+</article>
+<lol>
+	<photo>
+		test
+	</photo>
+	<test2>
+		<price>
+			200euro
+		</price>
+	</test2>
+</lol>})
+	end
+
 end
