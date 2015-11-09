@@ -93,21 +93,25 @@ describe BOB do
 	end
 
 	it 'tests style on child_element' do
-		expect(BOB.new("div").append("span").style("test").s() ).to eq("<div></div><span style=\"test\"></span>")
+		expect(BOB.new("div").do([1]).append("span").style("test").s() ).to eq("<div></div><span style=\"test\"></span>")
 	end
 	it 'tests style on child_element' do
-		expect(BOB.new("div").append("span").classs("test").s() ).to eq("<div></div><span class=\"test\"></span>")
+		expect(BOB.new("div").do([1]).append("span").classs("test").s() ).to eq("<div></div><span class=\"test\"></span>")
 	end
 	it 'tests append on child_element' do
-		expect(BOB.new("div").append("span").append("test").s() ).to eq("<div></div><span></span><test></test>")
+		expect(BOB.new("div").do([1]).append("span").append("test").s() ).to eq("<div></div><span></span><test></test>")
 	end
 	it 'tests prepend on child_element' do
-		expect(BOB.new("div").append("span").prepend("test").s() ).to eq("<div></div><test></test><span></span>")
+		expect(BOB.new("div").do([1]).append("span").prepend("test").s() ).to eq("<div></div><test></test><span></span>")
 	end
 	it 'tests pretty Print on child_element' do
-		expect(BOB.new("div").append("span").prettyPrint() ).to eq("<div>\n</div>\n<span>\n</span>")
+		expect(BOB.new("div").do([1]).append("span").prettyPrint() ).to eq("<div>\n</div>\n<span>\n</span>")
 	end
 	it "throws error when space is in identifier" do
 		expect{BOB.new("di v").s() }.to raise_error(StandardError, "Invalid Element selector. \"di v\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\".")	
+	end
+
+	it "test with two prepends" do
+		expect(BOB.new("div").prepend("span").prepend("test").s() ).to eq("<test></test><span></span><div></div>")
 	end
 end
