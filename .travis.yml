@@ -8,6 +8,7 @@ rvm:
 - 2.1.0
 - 2.1.3
 - jruby
+- head
 os:
 - linux
 - osx
@@ -21,3 +22,6 @@ matrix:
     os: osx
   - rvm: jruby
     os: osx
+addons:
+  code_climate:
+    repo_token: 323bcac9
