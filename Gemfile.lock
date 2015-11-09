@@ -37,6 +37,6 @@ PLATFORMS
 DEPENDENCIES
   BOB!
   bundler (~> 1.9)
-  codeclimate-test-reporter (~> 0.4)
+  codeclimate-test-reporter
   rake (~> 10.0)
   rspec (~> 3.3)
