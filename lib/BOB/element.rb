@@ -38,7 +38,7 @@ module BOB
 
 		def initialize (selector, options=nil, parent=nil, preBob=nil, contentBob=nil, postBob=nil)
 			if selector.include?(" ")
-				throw "Invalid Element selector. \"" + selector.to_s + "\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\"."
+				raise StandardError, "Invalid Element selector. \"" + selector.to_s + "\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\"."
 				return "Invalid selector. See console log for more details."
 			end
 

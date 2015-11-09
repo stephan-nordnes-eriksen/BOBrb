@@ -107,4 +107,7 @@ describe BOB do
 	it 'tests pretty Print on child_element' do
 		expect(BOB.new("div").append("span").prettyPrint() ).to eq("<div>\n</div>\n<span>\n</span>")
 	end
+	it "throws error when space is in identifier" do
+		expect{BOB.new("di v").s() }.to raise_error(StandardError, "Invalid Element selector. \"di v\" contains \" \"(space). Only allowed is \"tag\", \"tag.class\", or \"tag#id\".")	
+	end
 end
