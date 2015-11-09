@@ -3,11 +3,9 @@ BOB is a simple and powerfull ruby pipe system for building complex XML and HTML
 
 ![BOB](/BOB.png?raw=true)
 
-##Install:
-//TODO: TRANSLATE TO RUBY
-Download the repo, or copy the small (<8 KB) [`public/BOB.standalone.min.js`](public/BOB.standalone.min.js). It is completely stand alone, no external libraries needed.
+[![Build Status](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb.svg)](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb)
 
-Then in your html's header tag
+##Install:
 ```ruby
 
 	require "BOB"
