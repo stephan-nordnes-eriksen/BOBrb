@@ -9,9 +9,9 @@ module BOB
 	end
 
 	def self.data(*args)
-		BOB::Element.data(*args)
+		BOB::Element.method(:data)
 	end
 	def self.d(*args)
-		BOB::Element.d(*args)
+		BOB::Element.method(:d)
 	end
 end
