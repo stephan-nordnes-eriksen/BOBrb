@@ -1,39 +1,247 @@
-# BOB
+#BOB
+BOB is a simple and powerfull ruby pipe system for building complex XML and HTML structures. 
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/BOB`. To experiment with that code, run `bin/console` for an interactive prompt.
+![BOB](/BOB.png?raw=true)
 
-TODO: Delete this and the text above, and describe your gem
+##Install:
+//TODO: TRANSLATE TO RUBY
+Download the repo, or copy the small (<8 KB) [`public/BOB.standalone.min.js`](public/BOB.standalone.min.js). It is completely stand alone, no external libraries needed.
 
-## Installation
+Then in your html's header tag
+```html
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'BOB'
+	<script src="/BOB.standalone.min.js"></script>
 ```
 
-And then execute:
+###Bower
+    bower install BOB
 
-    $ bundle
+###NPM module will come in the future
+I found that there is already an NPM moduled called [bob](https://www.npmjs.com/package/bob), so I am open to name suggestions.
 
-Or install it yourself as:
+##Usage:
+BOB is a pipe system for generating html structures.
 
-    $ gem install BOB
+###TL;DR
+```javascript
 
-## Usage
+	BOB.new("div").toString() //=> "<div></div>"
+	BOB.new("div").s() //=> "<div></div>"
+	BOB.new("div").classs("some_class").s() //=> "<div class=\"some_class\"></div>" #NOTICE CLASSS, with three "s"-es. This is because ruby has defined the .class method.
+	BOB.new("div").id("some_id").s() //=> "<div id=\"some_class\"></div>"
+	BOB.new("div.some_class").s() //=> "<div class=\"some_class\"></div>"
+    BOB.new("div#some_id").s() //=> "<div id=\"some_class\"></div>"
+    BOB.new("div").style("min-height: 10px;").s() //=> "<div style=\"min-height: 10px;\"></div>"
+    BOB.new("h1").content("BOB is awesome! <3").s() //=> "<h1>BOB is awesome! <3</h1>"
+    BOB.new("div", {"data-BOB-is-cool": "Yes it is", "data-very-cool": "indeed"}).s() //=> "<div data-BOB-is-cool="Yes it is" data-very-cool="indeed"></div>"
+    BOB.new("div").append("span").s() //=> "<div></div><span></span>"
+    BOB.new("div").prepend("span").s() //=> "<span></span><div></div>"
+	BOB.new("div").insert("span").s() //=> "<div><span></span></div>"
+    BOB.new("div").append("span").id("some_id").s() //=> "<div></div><span id=\"some_id\"></span>"
+    BOB.new("div").append("span").up().id("some_id").s() //=> "<div id=\"some_id\"></div><span></span>"
+    BOB.new("ul").do([1,2,3]).insert("li").content(BOB.data).s() //=> <ul><li>1</li><li>2</li><li>3</li></ul>
+    data = [1,2,3]; BOB.new("ul").do(data).insert("li", {"data-property": BOB.data}).id(BOB.data).s() //=> <ul><li id="1" data-property="1"></li><li id="2" data-property="2"></li><li id="3" data-property="3"></li></ul>
+    BOB.new("ul").do([1,2,3]).insert("li").up().id(BOB.data).s() //INVALID //=> The BOB.data will not be set and you will get the output of: "<ul><li></li><li></li><li></li></ul>".
+    BOB.new("ul").do([1,2,3]).insert("li").content(lambda{return BOB.data() + 2}).s() //=> <ul><li>3</li><li>4</li><li>5</li></ul>
+    data_modifier = lambda{return BOB.data() + 2}; BOB.new("ul").do([1,2,3]).insert("li").content(data_modifier).s() //=> <ul><li>3</li><li>4</li><li>5</li></ul>
+    
+    //Shorthand syntax:
+    BOB.new("div").i("img", {"src":"some.png"}).u().d([1,2,3]).i("p.number").co(BOB.d).s() //=> "<div><img src="some.png"></img><p class="number">1</p><p class="number">2</p><p class="number">3</p></div>"
+```
+[Go to shorthand syntax section](#shorthand)
 
-TODO: Write usage instructions here
+###Building a simple tag:
+```javascript
 
-## Development
+    BOB.new("div").toString() 
+    //=> "<div></div>"
+```
+You can also use the shorthand method "s". For a full list see [the shorthand section](#shorthand)
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+```javascript
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    BOB.new("div").s()
+    //=> "<div></div>"
+```
 
-## Contributing
+###Adding IDs and classes
+```javascript
 
-1. Fork it ( https://github.com/[my-github-username]/BOB/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+	BOB.new("div").classs("some_class").s()
+    //=> "<div class=\"some_class\"></div>"
+    BOB.new("div").id("some_id").s()
+    //=> "<div id=\"some_class\"></div>"
+```
+
+This can also be done with the shorthand selector style:
+```javascript
+
+    BOB.new("div.some_class").s()
+    //=> "<div class=\"some_class\"></div>"
+    BOB.new("div#some_id").s()
+    //=> "<div id=\"some_class\"></div>"
+```
+
+###Adding styles, content, and custom attributes
+```javascript
+
+	BOB.new("div").style("min-height: 10px;").s()
+    //=> "<div style=\"min-height: 10px;\"></div>"
+    BOB.new("h1").content("BOB is awesome! <3").s()
+    //=> "<h1>BOB is awesome! <3</h1>"
+    BOB.new("div", {"data-BOB-is-cool": "Yes it is", "data-very-cool": "indeed"}).s()
+    //=> "<div data-BOB-is-cool="Yes it is" data-very-cool="indeed"></div>"
+```
+
+###Building and appending/prepending tags:
+```javascript
+
+    BOB.new("div").append("span").s()
+    //=> "<div></div><span></span>"
+    BOB.new("div").prepend("span").s()
+    //=> "<span></span><div></div>"
+```
+
+###Building with inserting tags:
+```javascript
+
+    BOB.new("div").insert("span").s()
+    //=> "<div><span></span></div>"
+```
+
+###Handling basic nesting
+When appending, prepending, or inserting you will effectively branch downwards, meaning that the latest element is your current active. Example:
+
+```javascript
+
+	BOB.new("div").append("span").id("some_id").s()
+	//=> "<div></div><span id=\"some_id\"></span>"
+```
+
+In this simlpe example we see that it is the `span` that receives the `id`, not the div. If we wanted to affect the `div` in stead (in this trivial, nonsensical, example), we would do:
+
+```javascript
+
+	BOB.new("div").append("span").up().id("some_id").s()
+	//=> "<div id=\"some_id\"></div><span></span>"	
+```
+
+We effectively traversed backwards, or up, the stack. This is the basics of managing nesting and branching. Let's have a look at how to build usefull branches.
+
+**It is very improtant to keep track of what is "in focus" when you are applying the next pipe.**
+
+
+###Branching out
+Say you want HTML that looks like this:
+
+```javascript
+
+    <ul><li>1</li><li>2</li><li>3</li></ul>
+```
+
+To do such branching, without having to re-write all parts manually, you can use the `do` method:
+
+```javascript
+
+    BOB.new("ul").do([1,2,3]).insert("li").content(BOB.data).s()
+    //=> <ul><li>1</li><li>2</li><li>3</li></ul>
+```
+
+Here you see `BOB.data` which is a special variable which represend the individal data points when the chain in being executed. It can be used for anything within the scope of the `do`, eg.
+
+```javascript
+
+	data = [1,2,3]
+    BOB.new("ul").do(data).insert("li", {"data-property": BOB.data}).id(BOB.data).s()
+    //=> <ul><li id="1" data-property="1"></li><li id="2" data-property="2"></li><li id="3" data-property="3"></li></ul>
+```
+
+However, if you use the `up` command and go out of the scope of `do`, `BOB.data` might not work. The behaviour is undefined so errors and/or strange behaviour might occur. Eg:
+
+```javascript
+
+	BOB.new("ul").do([1,2,3]).insert("li").up().id(BOB.data).s() //INVALID
+    //=> The BOB.data will not be set and you will get the output of: "<ul><li></li><li></li><li></li></ul>".
+```
+
+###Processing data and BOB.data
+BOB.data is a function, so **you cannot manipulate `BOB.data` directly.**
+
+It is adviced to do the data manipulation prior to the `do` pipe. However it is possible to manipulate BOB.data inline like this:
+
+```javascript
+
+	BOB.new("ul").do([1,2,3]).insert("li").content(lambda{return BOB.data() + 2}).s()
+    //=> <ul><li>3</li><li>4</li><li>5</li></ul>
+    //Or you can predefine a set of manipulations
+    data_modifier = lambda{return BOB.data() + 2}
+    BOB.new("ul").do([1,2,3]).insert("li").content(data_modifier).s()
+    //=> <ul><li>3</li><li>4</li><li>5</li></ul>
+```
+
+
+<a name="shorthand"></a>
+###Short hand syntax
+Writing out these pipes can be tiresom if you are building big and complex structures, so you can utilize these shorthand methods.
+
+Long Version | Short Version
+------------ | -------------
+.insert   | .i
+.append   | .a
+.prepend  | .p
+.content  | .co
+.style    | .st
+.classs    | .cl
+.id       | .id
+.style    | .st
+.toString | .s
+.do       | .d
+.up       | .u
+BOB.data  | BOB.d
+
+Now you can get tight and cozy syntax like this:
+
+```javascript
+
+	BOB.new("div").i("img", {"src":"some.png"}).u().d([1,2,3]).i("p.number").co(BOB.d).s()
+	//=> "<div><img src="some.png"></img><p class="number">1</p><p class="number">2</p><p class="number">3</p></div>"
+```
+
+###Some complex examples
+Better examples coming
+
+```javascript
+	
+	data = ["Team member1", "team member2", "team member3"]
+	BOB.new("ul").do(data).insert("li.team").content(BOB.data).s()
+	//=> "<ul><li class="team">Team member1</li><li class="team">team member2</li><li class="team">team member3</li></ul>"
+
+	BOB.new("div#wrapper").insert("div#searchbar").up().insert("footer").do(["team","contact","buy"]).insert("h2").content(BOB.data).s()
+	//=> "<div id="wrapper"><div id="searchbar"></div><footer><h2>team</h2><h2>contact</h2><h2>buy</h2></footer></div>"
+
+	BOB.new("div#wrapper").insert("div#searchbar").up().insert("footer").do(["team","contact","buy"]).insert("h2",{"onclick": lambda{return ("alert('" + BOB.data() + "');") }}).content(BOB.data).s()
+	//=> "<div id="wrapper"><div id="searchbar"></div><footer><h2 onclick="alert('team');">team</h2><h2 onclick="alert('contact');">contact</h2><h2 onclick="alert('buy');">buy</h2></footer></div>"
+
+	BOB.new("div#wrapper").insert("div#searchbar").up().insert("footer").do(["team","contact","buy"]).insert("h2",{"onclick": lambda{return ("alert('" + BOB.data() + "');") }}).content(BOB.data).up().up().prepend("a",{"href": "http://www.google.com"}).content("google").s()
+	//=> "<a href="http://www.google.com">google</a><div id="wrapper"><div id="searchbar"></div><footer><h2 onclick="alert('team');">team</h2><h2 onclick="alert('contact');">contact</h2><h2 onclick="alert('buy');">buy</h2></footer></div>"
+```
+
+###Comparing to D3 and jQuery:
+TODO: get simple and complex examples comparing BOB, d3 and jQuery. And also pure JS maybe.
+
+##Important notes:
+Currently BOB has no unit tests, so it cannot be considered production ready. 
+
+Please help contribute to this project. It is brand new, and there are probably loads of features that can be added. 
+
+###Planned features
+
+ - Adding element selector which finds elements in the active DOM.
+ - Adding ability to output string into existing elements (similar how jQuery does it)
+ - Adding nested data-aquisition data, eg: BOB.new("div").do(["a", "b"]).do([1,2]).in("a").classs(BOB.data[0]).co(BOB.data[1])
+ //=> <div><a class="a">1</a><a class="a">2</a><a class="b">1</a><a class="b">2</a></div>
+ - Automaticly detect if option value is a function. If so, create a callback for it. Eg: BOB.new("a", {"onclick": lambda{alert "some shit"}}).co("call me")
+ //=> <a onclick="BOB.callbacks\[N\]();">call me</a> (this can be problematic with BOB.data. Solution: pass BOB.data into the callback.) => {"onclick": function(data){alert(data+1)}} => <a onclick="BOB.callbacks\[N\]('parsed BOB.data');". The same approach can be used other places as well.
+
+##License
+MIT
