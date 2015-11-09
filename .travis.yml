@@ -1,7 +1,6 @@
 language: ruby
 sudo: false
 rvm:
-- 1.8.7
 - 1.9.2
 - 1.9.3
 - 2.0.0
@@ -14,8 +13,6 @@ os:
 - osx
 matrix:
   exclude:
-  - rvm: 1.8.7
-    os: osx
   - rvm: 1.9.2
     os: osx
   - rvm: 2.1.0
@@ -24,4 +21,4 @@ matrix:
     os: osx
 addons:
   code_climate:
-    repo_token: dbbc732a1a68e8d47a792955b21b0a0018854a658239511a561dff1e0c7a127f
+    repo_token: dbbc732a1a68e8d47a792955b21b0a0018854a658239511a561dff1e0c7a127f!
