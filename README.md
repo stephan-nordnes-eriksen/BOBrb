@@ -6,15 +6,16 @@ BOB is a simple and powerfull ruby pipe system for building complex XML and HTML
 [![Build Status](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb.svg)](https://travis-ci.org/stephan-nordnes-eriksen/BOBrb)
 [![Code Climate](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/badges/gpa.svg)](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb)
 [![Test Coverage](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/badges/coverage.svg)](https://codeclimate.com/github/stephan-nordnes-eriksen/BOBrb/coverage)
+[![Gem Version](https://badge.fury.io/rb/BOBrb.svg)](https://badge.fury.io/rb/BOBrb)
 
 ##Install:
 ```ruby
 
-	require "BOB"
+	require "BOBrb"
 ```
 
-###Gem (currently unreleased)
-    gem install BOB
+###Gem
+    gem install BOBrb
 
 ##Usage:
 BOB is a pipe system for generating html structures.
