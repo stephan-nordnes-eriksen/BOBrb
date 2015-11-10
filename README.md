@@ -68,7 +68,7 @@ You can also use the shorthand method "s". For a full list see [the shorthand se
 	BOB.new("div").classs("some_class").s()
     #=> "<div class=\"some_class\"></div>"
     BOB.new("div").id("some_id").s()
-    #=> "<div id=\"some_class\"></div>"
+    #=> "<div id=\"some_id\"></div>"
 ```
 
 This can also be done with the shorthand selector style:
@@ -77,7 +77,7 @@ This can also be done with the shorthand selector style:
     BOB.new("div.some_class").s()
     #=> "<div class=\"some_class\"></div>"
     BOB.new("div#some_id").s()
-    #=> "<div id=\"some_class\"></div>"
+    #=> "<div id=\"some_id\"></div>"
 ```
 
 ###Adding styles, content, and custom attributes
