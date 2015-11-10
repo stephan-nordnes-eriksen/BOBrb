@@ -1,4 +1,4 @@
-module BOB
+module BOBrb
 	class ChildArray
 		def initialize (dataset, parent)
 			@dataset = dataset
@@ -6,13 +6,13 @@ module BOB
 			@bobs = []
 		end
 
-		#No point in doing this on parent. Does not make sense to do ".do(data).id(BOB::Element.data)"
+		#No point in doing this on parent. Does not make sense to do ".do(data).id(BOBrb::Element.data)"
 		def content (content)
 			self.co(content)
 		end
 		def co (content)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				@bobs[i].co(content) if @bobs[i]
 			end
 			return self
@@ -22,7 +22,7 @@ module BOB
 		end
 		def st (style)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				@bobs[i].st(style) if @bobs[i]
 			end
 			return self
@@ -32,14 +32,14 @@ module BOB
 		end
 		def cl (object_class)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				@bobs[i].cl(object_class) if @bobs[i]
 			end
 			return self
 		end
 		def id (object_id)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				@bobs[i].id(object_id) if @bobs[i]
 			end
 			return self
@@ -49,7 +49,7 @@ module BOB
 		end
 		def i (data, options=nil)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].insert(data, options)
 				else
@@ -64,7 +64,7 @@ module BOB
 		end
 		def a (data, options=nil)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].a(data, options)
 				else
@@ -79,7 +79,7 @@ module BOB
 		end
 		def p (data, options=nil)
 			@dataset.each_with_index do |item, i|
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].p(data, options)
 				else
@@ -117,7 +117,7 @@ module BOB
 		end
 		def d (data)
 			for bob in @bobs
-				BOB::Element.data = item
+				BOBrb::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].d(data)
 				else
@@ -132,14 +132,14 @@ module BOB
 		end
 		def u
 			unless @bobs[0]
-				BOB::Element.data = nil
+				BOBrb::Element.data = nil
 				return @parent
 			end
 			[0...@bobs.length].each do |i|
 				@bobs[i] = @bobs[i].u()
 			end
 			if @bobs[0] == @parent
-				BOB::Element.data = nil
+				BOBrb::Element.data = nil
 				return @parent
 			else
 				return self

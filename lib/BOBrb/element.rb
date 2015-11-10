@@ -1,7 +1,7 @@
 # BOB
 
 # build or bail
-module BOB
+module BOBrb
 	class Element
 		attr_accessor :object_content, :parent
 		@@data = nil

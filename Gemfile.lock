@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    BOB (0.1.0)
+    BOBrb (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -35,7 +35,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  BOB!
+  BOBrb!
   bundler (~> 1.9)
   codeclimate-test-reporter
   rake (~> 10.0)
