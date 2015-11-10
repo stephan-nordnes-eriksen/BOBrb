@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    BOBrb (0.1.0)
+    BOBrb (0.1.2)
 
 GEM
   remote: https://rubygems.org/
