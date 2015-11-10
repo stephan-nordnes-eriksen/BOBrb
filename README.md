@@ -51,14 +51,14 @@ BOB is a pipe system for generating html structures.
 ###Building a simple tag:
 ```ruby
 
-    BOBrb.new("div").toString() 
+    BOBrb.new("div").toString
     #=> "<div></div>"
 ```
 You can also use the shorthand method "s". For a full list see [the shorthand section](#shorthand)
 
 ```ruby
 
-    BOBrb.new("div").s()
+    BOBrb.new("div").s
     #=> "<div></div>"
 ```
 
@@ -163,7 +163,7 @@ However, if you use the `up` command and go out of the scope of `do`, `BOBrb.dat
 ```
 
 ###Processing data and BOBrb.data
-BOBrb.data is a function, so **you cannot manipulate `BOBrb.data` directly.**
+BOBrb.data is a function, so **you cannot manipulate `BOBrb.data` directly.** (restriction from Javascript BOB. Will be updated in BOBrb)
 
 It is adviced to do the data manipulation prior to the `do` pipe. However it is possible to manipulate BOBrb.data inline like this:
 
@@ -177,6 +177,31 @@ It is adviced to do the data manipulation prior to the `do` pipe. However it is 
     #=> <ul><li>3</li><li>4</li><li>5</li></ul>
 ```
 
+###Pretty Printing
+It is possible get a pretty printed version of the XML/HTML, with the `.prettyPrint()` method, or the `.pp` shorthand.
+
+```ruby
+
+    BOBrb.new("article").a("lol").i("photo").co("test").a("test2").i("price").co("200euro").pp()
+    #=> "</article>\n<lol>\n\t<photo>\n\t\ttest\n\t</photo>\n\t<test2>\n\t\t<price>\n\t\t\t200euro\n\t\t</price>\n\t</test2>\n</lol>"
+
+```
+
+This string will print as the following:
+
+```
+</article>
+<lol>
+	<photo>
+		test
+	</photo>
+	<test2>
+		<price>
+			200euro
+		</price>
+	</test2>
+</lol>
+```
 
 <a name="shorthand"></a>
 ###Short hand syntax
@@ -196,6 +221,7 @@ Long Version | Short Version
 .do          | .d
 .up          | .u
 BOBrb.data   | BOBrb.d
+.prettyPrint | .pp
 
 Now you can get tight and cozy syntax like this:
 
