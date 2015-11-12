@@ -136,7 +136,6 @@ module BOBrb
 				return @parent
 			end
 			@bobs.each_with_index do |bob, i|
-				puts @bobs[i].inspect
 				@bobs[i] = @bobs[i].u()
 			end
 			if @bobs[0] == @parent
