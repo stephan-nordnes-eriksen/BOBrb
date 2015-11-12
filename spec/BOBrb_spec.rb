@@ -114,4 +114,15 @@ describe BOBrb do
 	it "test with two prepends" do
 		expect(BOBrb.new("div").prepend("span").prepend("test").s() ).to eq("<test></test><span></span><div></div>")
 	end
+	it "setting xml-mode should close tags with no internals" do
+		BOBrb.set_mode(:xml)
+		expect(BOBrb.new("div").prepend("span").prepend("test").s() ).to eq("<test /><span /><div />")
+		BOBrb.set_mode(:html)
+	end
+	it "do should stop when moving up" do
+		expect(BOBrb.new("ul").do([1,2,3]).insert("li").content(BOBrb.data).up().append("div").s() ).to eq("<ul><li>1</li><li>2</li><li>3</li></ul><div></div>")
+	end
+	it "do should stop when moving up #2" do
+		expect(BOBrb.new("ul").do([1,2,3]).append("x").insert("li").content(BOBrb.data).up().up().append("div").insert("yes").s() ).to eq("<ul></ul><x><li>1</li></x><x><li>2</li></x><x><li>3</li></x><div><yes></yes></div>")
+	end
 end
