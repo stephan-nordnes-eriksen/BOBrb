@@ -190,7 +190,7 @@ module BOBrb
 				printself << 'style="' + @object_style.to_s() + '" ' if @object_style
 
 				printself = printself[0..-2]
-				closable = (["area",
+				closable = BOBrb.get_mode == :xml || (["area",
 							"base",
 							"br",
 							"col",
