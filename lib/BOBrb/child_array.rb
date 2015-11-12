@@ -116,7 +116,7 @@ module BOBrb
 			self.d(data)
 		end
 		def d (data)
-			for bob in @bobs
+			@bobs.each_with_index do |bob, i|
 				BOBrb::Element.data = item
 				if @bobs[i]
 					@bobs[i] = @bobs[i].d(data)
@@ -135,7 +135,8 @@ module BOBrb
 				BOBrb::Element.data = nil
 				return @parent
 			end
-			[0...@bobs.length].each do |i|
+			@bobs.each_with_index do |bob, i|
+				puts @bobs[i].inspect
 				@bobs[i] = @bobs[i].u()
 			end
 			if @bobs[0] == @parent
